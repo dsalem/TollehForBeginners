@@ -1,0 +1,936 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Tolleh — Redesign Mockup</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --wood-dark: #2e1a0c;
+    --wood-mid:  #4d2e16;
+    --wood-light:#7d4e26;
+    --wood-inlay:#c79a4a;
+
+    --felt:      #efe2c6;
+    --felt-shade:#d8c69e;
+    --felt-edge: #b89971;
+
+    --point-dark: #7a2e23;
+    --point-light:#e9d8b6;
+
+    --ivory: #f5ecd6;
+    --ebony: #1a1410;
+
+    --ink-1: #1c1207;
+    --ink-2: #4d3a26;
+    --ink-3: #7a6244;
+
+    --good:    #3c8a4a;
+    --slight:  #c9a23a;
+    --error:   #d97a1f;
+    --blunder: #b21d1d;
+
+    --bg-page: #1a120a;
+
+    --shadow-card: 0 18px 42px rgba(0,0,0,.45), 0 2px 6px rgba(0,0,0,.3);
+    --shadow-checker: 0 3px 4px rgba(0,0,0,.35);
+  }
+
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0;
+    background: radial-gradient(ellipse at top, #2a1a0d 0%, #120a04 70%);
+    min-height: 100vh;
+    color: #f0e6d3;
+    font-family: 'Inter', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .app {
+    max-width: 1480px;
+    margin: 0 auto;
+    padding: 18px 24px 48px;
+  }
+
+  /* ── Top bar ────────────────────────────────────────── */
+  .topbar {
+    display: flex; align-items: center; gap: 16px;
+    padding: 10px 16px;
+    background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(0,0,0,.18));
+    border: 1px solid rgba(199,154,74,.25);
+    border-radius: 10px;
+    backdrop-filter: blur(6px);
+  }
+  .logo {
+    font-family: 'EB Garamond', serif;
+    font-size: 22px; font-weight: 600;
+    letter-spacing: .04em;
+    color: var(--wood-inlay);
+  }
+  .logo .dot { color: #f0e6d3; }
+  .topbar .spacer { flex: 1; }
+  .pill {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 6px 12px;
+    background: rgba(255,255,255,.05);
+    border: 1px solid rgba(199,154,74,.2);
+    border-radius: 999px;
+    font-size: 13px; color: #ead9b6;
+  }
+  .pill .label { color: #b8a378; font-size: 11px; text-transform: uppercase; letter-spacing: .08em; }
+  .pill .val { font-family: 'EB Garamond', serif; font-size: 16px; font-weight: 600; }
+  .turn-indicator {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 6px 14px;
+    background: linear-gradient(180deg, #f5ecd6, #d8c69e);
+    color: #1a1410;
+    font-weight: 600; font-size: 13px;
+    border-radius: 999px;
+    box-shadow: 0 2px 6px rgba(0,0,0,.3);
+  }
+  .turn-indicator::before {
+    content: '';
+    width: 12px; height: 12px; border-radius: 50%;
+    background: var(--ivory);
+    box-shadow: inset -2px -2px 3px rgba(0,0,0,.2), 0 0 0 2px #1a1410;
+  }
+  .icon-btn {
+    width: 34px; height: 34px;
+    border: 1px solid rgba(199,154,74,.2);
+    background: rgba(255,255,255,.04);
+    color: #ead9b6;
+    border-radius: 8px;
+    cursor: pointer;
+    display: inline-flex; align-items: center; justify-content: center;
+  }
+  .icon-btn:hover { background: rgba(255,255,255,.08); }
+
+  /* ── Main grid ──────────────────────────────────────── */
+  .main {
+    margin-top: 18px;
+    display: grid;
+    grid-template-columns: 220px 1fr 320px;
+    gap: 18px;
+    align-items: start;
+  }
+
+  /* ── Rails ──────────────────────────────────────────── */
+  .rail {
+    background: linear-gradient(180deg, rgba(255,255,255,.03), rgba(0,0,0,.15));
+    border: 1px solid rgba(199,154,74,.18);
+    border-radius: 12px;
+    padding: 14px;
+  }
+  .rail h3 {
+    margin: 0 0 10px;
+    font-family: 'EB Garamond', serif;
+    font-size: 16px; font-weight: 600;
+    color: #d6c094; letter-spacing: .04em;
+  }
+  .stat {
+    display: flex; justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px dashed rgba(199,154,74,.15);
+    font-size: 13px;
+  }
+  .stat:last-child { border-bottom: 0; }
+  .stat .v { font-family: 'EB Garamond', serif; font-size: 18px; font-weight: 600; color: #f0e6d3; }
+  .stat .v.lead { color: var(--good); }
+  .stat .v.trail { color: #e2a44b; }
+
+  .move-row {
+    display: grid; grid-template-columns: 28px 1fr 1fr; gap: 8px;
+    padding: 6px 4px;
+    font-size: 12px;
+    border-bottom: 1px solid rgba(199,154,74,.08);
+    align-items: center;
+  }
+  .move-row .n { color: #8a7654; font-variant-numeric: tabular-nums; }
+  .move-row.bad .me { color: #f4a85e; }
+  .move-row.bad .me::after {
+    content: '✦'; margin-left: 4px;
+    color: var(--error);
+  }
+
+  .mistake-history-item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 8px 10px;
+    margin-top: 6px;
+    background: rgba(178, 29, 29, .07);
+    border-left: 3px solid var(--error);
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+  }
+  .mistake-history-item:hover { background: rgba(178, 29, 29, .14); }
+  .mistake-history-item .sev {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--error);
+  }
+  .mistake-history-item.blunder { border-left-color: var(--blunder); background: rgba(178,29,29,.12); }
+  .mistake-history-item.blunder .sev { background: var(--blunder); }
+  .mistake-history-item.slight { border-left-color: var(--slight); background: rgba(201,162,58,.08); }
+  .mistake-history-item.slight .sev { background: var(--slight); }
+  .mistake-history-item .label { flex: 1; color: #e0cf9f; }
+  .mistake-history-item .eq { font-family: 'EB Garamond', serif; color: #f0e6d3; font-size: 14px; }
+
+  /* ── Board stage ────────────────────────────────────── */
+  .stage {
+    position: relative;
+    aspect-ratio: 1200/720;
+    border-radius: 14px;
+    overflow: visible;
+  }
+
+  .stage svg { display: block; width: 100%; height: auto; }
+
+  /* ── Mistake card ──────────────────────────────────── */
+  .mistake-card {
+    position: absolute;
+    right: 16px; bottom: 16px;
+    width: 360px;
+    background: linear-gradient(180deg, #fbf6e8 0%, #f1e7c9 100%);
+    color: var(--ink-1);
+    border-radius: 12px;
+    padding: 16px 18px 14px;
+    box-shadow: var(--shadow-card);
+    border-top: 3px solid var(--error);
+    transform: translateY(0); opacity: 1;
+    transition: transform .22s cubic-bezier(.2,.8,.2,1), opacity .22s, border-color .2s;
+    font-family: 'Inter', sans-serif;
+  }
+  .mistake-card.hidden {
+    transform: translateY(8px); opacity: 0; pointer-events: none;
+  }
+  .mistake-card .badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-size: 11px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: .08em;
+    background: var(--error); color: white;
+  }
+  .mistake-card .badge .ico { font-size: 12px; }
+  .mistake-card.tier-slight { border-top-color: var(--slight); }
+  .mistake-card.tier-slight .badge { background: var(--slight); color: #2a200a; }
+  .mistake-card.tier-error  { border-top-color: var(--error); }
+  .mistake-card.tier-error  .badge { background: var(--error); }
+  .mistake-card.tier-blunder { border-top-color: var(--blunder); border-top-width: 4px; }
+  .mistake-card.tier-blunder .badge { background: var(--blunder); }
+  .mistake-card.tier-good { border-top-color: var(--good); }
+  .mistake-card.tier-good .badge { background: var(--good); }
+
+  .mistake-card .head {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 10px;
+  }
+  .mistake-card .close {
+    background: transparent; border: 0; color: var(--ink-3);
+    font-size: 18px; cursor: pointer; line-height: 1;
+    padding: 2px 4px; border-radius: 4px;
+  }
+  .mistake-card .close:hover { background: rgba(0,0,0,.06); }
+  .mistake-card .equity-loss {
+    margin: 12px 0 4px;
+    font-family: 'EB Garamond', serif;
+    font-size: 38px; font-weight: 600;
+    line-height: 1;
+    color: var(--ink-1);
+    font-variant-numeric: tabular-nums;
+  }
+  .mistake-card .equity-loss .sign { color: var(--blunder); }
+  .mistake-card.tier-error .equity-loss .sign { color: var(--error); }
+  .mistake-card.tier-slight .equity-loss .sign { color: var(--slight); }
+  .mistake-card .equity-label {
+    font-size: 11px; text-transform: uppercase;
+    letter-spacing: .1em; color: var(--ink-3);
+    margin-bottom: 12px;
+  }
+  .mistake-card .moves {
+    background: rgba(0,0,0,.04);
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-size: 13px;
+  }
+  .mistake-card .move-line {
+    display: flex; justify-content: space-between; align-items: baseline;
+    padding: 4px 0;
+  }
+  .mistake-card .move-line .lbl {
+    font-size: 11px; color: var(--ink-3); text-transform: uppercase; letter-spacing: .08em;
+  }
+  .mistake-card .move-line .play {
+    font-family: 'EB Garamond', serif; font-size: 16px; font-weight: 600; color: var(--ink-1);
+  }
+  .mistake-card .move-line .eq {
+    font-family: 'EB Garamond', serif; font-size: 14px; color: var(--ink-2);
+    font-variant-numeric: tabular-nums;
+  }
+  .mistake-card .move-line.best .play { color: var(--blunder); }
+  .mistake-card.tier-error .move-line.best .play { color: var(--error); }
+  .mistake-card.tier-slight .move-line.best .play { color: var(--slight); }
+  .mistake-card .actions {
+    display: flex; gap: 8px;
+    margin-top: 12px;
+  }
+  .mistake-card .btn {
+    flex: 1;
+    padding: 9px 10px;
+    border-radius: 7px;
+    border: 1px solid transparent;
+    background: var(--ink-1);
+    color: white;
+    font-weight: 600; font-size: 12.5px;
+    cursor: pointer;
+    letter-spacing: .02em;
+  }
+  .mistake-card .btn.ghost {
+    background: transparent;
+    color: var(--ink-2);
+    border-color: rgba(0,0,0,.18);
+  }
+  .mistake-card .btn:hover { filter: brightness(1.07); }
+  .mistake-card .footer {
+    margin-top: 10px;
+    font-size: 10.5px; color: var(--ink-3);
+    text-transform: uppercase; letter-spacing: .06em;
+    display: flex; gap: 10px; flex-wrap: wrap;
+  }
+  .mistake-card .footer .tag {
+    background: rgba(0,0,0,.05);
+    padding: 2px 7px; border-radius: 4px;
+  }
+
+  /* small green confirmation card for the GOOD state */
+  .good-flash {
+    position: absolute;
+    right: 24px; bottom: 24px;
+    background: var(--good); color: white;
+    padding: 8px 14px;
+    border-radius: 999px;
+    font-size: 13px; font-weight: 600;
+    box-shadow: 0 8px 22px rgba(0,0,0,.4);
+    display: none;
+  }
+
+  /* ── Severity demo controls ────────────────────────── */
+  .severity-toggles {
+    margin-top: 22px;
+    padding: 14px 18px;
+    background: rgba(255,255,255,.03);
+    border: 1px solid rgba(199,154,74,.18);
+    border-radius: 10px;
+    display: flex; gap: 8px; align-items: center; flex-wrap: wrap;
+  }
+  .severity-toggles .lab {
+    color: #b8a378; font-size: 12px; text-transform: uppercase; letter-spacing: .08em;
+    margin-right: 6px;
+  }
+  .severity-toggles button {
+    padding: 7px 12px;
+    border-radius: 7px;
+    border: 1px solid rgba(199,154,74,.25);
+    background: rgba(255,255,255,.04);
+    color: #ead9b6;
+    cursor: pointer;
+    font-size: 12.5px; font-weight: 500;
+  }
+  .severity-toggles button:hover { background: rgba(255,255,255,.09); }
+  .severity-toggles button.active {
+    background: var(--wood-inlay);
+    color: #1a1410;
+    border-color: var(--wood-inlay);
+    font-weight: 600;
+  }
+
+  .legend {
+    margin-top: 18px;
+    padding: 16px 20px;
+    background: rgba(255,255,255,.03);
+    border: 1px solid rgba(199,154,74,.18);
+    border-radius: 10px;
+    font-size: 13px; line-height: 1.6;
+    color: #d6c094;
+  }
+  .legend strong { color: #f0e6d3; }
+  .legend .sw {
+    display: inline-block; width: 10px; height: 10px; border-radius: 50%;
+    vertical-align: middle; margin-right: 4px;
+  }
+</style>
+</head>
+<body>
+
+<div class="app">
+
+  <!-- ─── Top bar ─── -->
+  <div class="topbar">
+    <span class="logo">Tolleh<span class="dot">·</span>gammon</span>
+    <div class="pill"><span class="label">Match</span><span class="val">3 — 1</span><span class="label">to 5</span></div>
+    <div class="pill"><span class="label">Cube</span><span class="val">2</span></div>
+    <div class="pill"><span class="label">Pip</span><span class="val">142 / 138</span></div>
+    <div class="spacer"></div>
+    <span class="turn-indicator">White to play</span>
+    <button class="icon-btn" title="Sound">🔊</button>
+    <button class="icon-btn" title="Settings">⚙</button>
+  </div>
+
+  <!-- ─── Main grid ─── -->
+  <div class="main">
+
+    <!-- LEFT RAIL -->
+    <div class="rail">
+      <h3>Position</h3>
+      <div class="stat"><span>White pip</span><span class="v lead">142</span></div>
+      <div class="stat"><span>Black pip</span><span class="v">138</span></div>
+      <div class="stat"><span>Pip diff</span><span class="v trail">+4</span></div>
+
+      <h3 style="margin-top:18px;">Cube</h3>
+      <div class="stat"><span>Value</span><span class="v">2</span></div>
+      <div class="stat"><span>Owner</span><span class="v" style="font-size:13px; font-family:Inter;">Centred</span></div>
+
+      <h3 style="margin-top:18px;">Score</h3>
+      <div class="stat"><span>White</span><span class="v">3</span></div>
+      <div class="stat"><span>Black</span><span class="v">1</span></div>
+    </div>
+
+    <!-- BOARD STAGE -->
+    <div class="stage" id="stage">
+
+      <!-- ───── BACKGAMMON BOARD SVG ───── -->
+      <svg viewBox="0 0 1200 720" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Backgammon board">
+        <defs>
+          <!-- WOOD frame gradient -->
+          <linearGradient id="wood" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%"  stop-color="#5a3518"/>
+            <stop offset="40%" stop-color="#7d4e26"/>
+            <stop offset="100%" stop-color="#3a2110"/>
+          </linearGradient>
+          <linearGradient id="woodVert" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%"  stop-color="#6e4220"/>
+            <stop offset="50%" stop-color="#4d2e16"/>
+            <stop offset="100%" stop-color="#2e1a0c"/>
+          </linearGradient>
+
+          <!-- FELT gradient -->
+          <linearGradient id="felt" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%"  stop-color="#f3e7cb"/>
+            <stop offset="100%" stop-color="#d6c099"/>
+          </linearGradient>
+          <radialGradient id="feltVignette" cx="50%" cy="50%" r="65%">
+            <stop offset="55%" stop-color="rgba(0,0,0,0)"/>
+            <stop offset="100%" stop-color="rgba(70,46,20,0.35)"/>
+          </radialGradient>
+
+          <!-- TRIANGLE gradients -->
+          <linearGradient id="triDark" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#94392c"/>
+            <stop offset="100%" stop-color="#641e15"/>
+          </linearGradient>
+          <linearGradient id="triLight" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#f0e2bc"/>
+            <stop offset="100%" stop-color="#cdb87f"/>
+          </linearGradient>
+
+          <!-- CHECKER gradients -->
+          <radialGradient id="ivory" cx="35%" cy="30%" r="80%">
+            <stop offset="0%"  stop-color="#fffaeb"/>
+            <stop offset="60%" stop-color="#ead9ad"/>
+            <stop offset="100%" stop-color="#a48656"/>
+          </radialGradient>
+          <radialGradient id="ebony" cx="35%" cy="30%" r="80%">
+            <stop offset="0%"  stop-color="#5a4938"/>
+            <stop offset="50%" stop-color="#221813"/>
+            <stop offset="100%" stop-color="#0c0805"/>
+          </radialGradient>
+
+          <!-- DICE gradient -->
+          <linearGradient id="dieGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#fcf5dd"/>
+            <stop offset="100%" stop-color="#dcc899"/>
+          </linearGradient>
+
+          <!-- soft shadow for checkers/dice -->
+          <filter id="softShadow" x="-20%" y="-20%" width="140%" height="140%">
+            <feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#000" flood-opacity=".35"/>
+          </filter>
+
+          <!-- best-move arrowhead -->
+          <marker id="arrowhead" viewBox="0 0 10 10" refX="9" refY="5"
+                  markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" fill="#c79a4a"/>
+          </marker>
+
+          <!-- bad-move arrowhead -->
+          <marker id="arrowhead-bad" viewBox="0 0 10 10" refX="9" refY="5"
+                  markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" fill="#b21d1d"/>
+          </marker>
+
+          <!-- inlay stroke pattern -->
+          <linearGradient id="inlay" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#e6b568"/>
+            <stop offset="100%" stop-color="#9d6f2c"/>
+          </linearGradient>
+        </defs>
+
+        <!-- OUTER FRAME -->
+        <rect x="0" y="0" width="1200" height="720" rx="14" fill="url(#wood)"/>
+        <rect x="6" y="6" width="1188" height="708" rx="11" fill="none" stroke="#1c0e04" stroke-width="2" opacity=".7"/>
+        <!-- mitre highlight -->
+        <rect x="10" y="10" width="1180" height="700" rx="9" fill="none" stroke="#a06a36" stroke-width="1" opacity=".4"/>
+
+        <!-- INNER PLAY AREA (felt) -->
+        <rect x="30" y="30" width="1140" height="660" rx="4" fill="url(#felt)"/>
+        <rect x="30" y="30" width="1140" height="660" rx="4" fill="url(#feltVignette)"/>
+
+        <!-- INLAY around felt -->
+        <rect x="26" y="26" width="1148" height="668" rx="6" fill="none" stroke="url(#inlay)" stroke-width="2"/>
+        <rect x="22" y="22" width="1156" height="676" rx="8" fill="none" stroke="#1c0e04" stroke-width="1" opacity=".5"/>
+
+        <!-- BAR -->
+        <rect x="570" y="30" width="60" height="660" fill="url(#woodVert)"/>
+        <rect x="572" y="30" width="2" height="660" fill="#9d6f2c" opacity=".5"/>
+        <rect x="626" y="30" width="2" height="660" fill="#9d6f2c" opacity=".5"/>
+        <line x1="600" y1="34" x2="600" y2="686" stroke="#1c0e04" stroke-width="1" opacity=".4"/>
+
+        <!-- POINTS -->
+        <!-- Top row points (13..18 left, 19..24 right) pointing DOWN -->
+        <g id="points-top">
+          <!-- 13 -->
+          <polygon points="30,30 120,30 75,300" fill="url(#triDark)"/>
+          <!-- 14 -->
+          <polygon points="120,30 210,30 165,300" fill="url(#triLight)"/>
+          <!-- 15 -->
+          <polygon points="210,30 300,30 255,300" fill="url(#triDark)"/>
+          <!-- 16 -->
+          <polygon points="300,30 390,30 345,300" fill="url(#triLight)"/>
+          <!-- 17 -->
+          <polygon points="390,30 480,30 435,300" fill="url(#triDark)"/>
+          <!-- 18 -->
+          <polygon points="480,30 570,30 525,300" fill="url(#triLight)"/>
+          <!-- 19 -->
+          <polygon points="630,30 720,30 675,300" fill="url(#triDark)"/>
+          <!-- 20 -->
+          <polygon points="720,30 810,30 765,300" fill="url(#triLight)"/>
+          <!-- 21 -->
+          <polygon points="810,30 900,30 855,300" fill="url(#triDark)"/>
+          <!-- 22 -->
+          <polygon points="900,30 990,30 945,300" fill="url(#triLight)"/>
+          <!-- 23 -->
+          <polygon points="990,30 1080,30 1035,300" fill="url(#triDark)"/>
+          <!-- 24 -->
+          <polygon points="1080,30 1170,30 1125,300" fill="url(#triLight)"/>
+        </g>
+
+        <!-- Bottom row points (12..7 left, 6..1 right) pointing UP -->
+        <g id="points-bottom">
+          <polygon points="30,690 120,690 75,420"   fill="url(#triLight)"/> <!-- 12 -->
+          <polygon points="120,690 210,690 165,420" fill="url(#triDark)"/>  <!-- 11 -->
+          <polygon points="210,690 300,690 255,420" fill="url(#triLight)"/> <!-- 10 -->
+          <polygon points="300,690 390,690 345,420" fill="url(#triDark)"/>  <!-- 9  -->
+          <polygon points="390,690 480,690 435,420" fill="url(#triLight)"/> <!-- 8  -->
+          <polygon points="480,690 570,690 525,420" fill="url(#triDark)"/>  <!-- 7  -->
+          <polygon points="630,690 720,690 675,420" fill="url(#triLight)"/> <!-- 6  -->
+          <polygon points="720,690 810,690 765,420" fill="url(#triDark)"/>  <!-- 5  -->
+          <polygon points="810,690 900,690 855,420" fill="url(#triLight)"/> <!-- 4  -->
+          <polygon points="900,690 990,690 945,420" fill="url(#triDark)"/>  <!-- 3  -->
+          <polygon points="990,690 1080,690 1035,420" fill="url(#triLight)"/><!-- 2  -->
+          <polygon points="1080,690 1170,690 1125,420" fill="url(#triDark)"/><!-- 1  -->
+        </g>
+
+        <!-- subtle "stitched" baselines on the felt at top and bottom of points -->
+        <line x1="30" y1="30" x2="570" y2="30" stroke="#9d6f2c" stroke-width="1" opacity=".25" stroke-dasharray="3 3"/>
+        <line x1="630" y1="30" x2="1170" y2="30" stroke="#9d6f2c" stroke-width="1" opacity=".25" stroke-dasharray="3 3"/>
+        <line x1="30" y1="690" x2="570" y2="690" stroke="#9d6f2c" stroke-width="1" opacity=".25" stroke-dasharray="3 3"/>
+        <line x1="630" y1="690" x2="1170" y2="690" stroke="#9d6f2c" stroke-width="1" opacity=".25" stroke-dasharray="3 3"/>
+
+        <!-- POINT NUMBERS (small, in the rail) -->
+        <g id="point-numbers" font-family="EB Garamond, serif" font-size="11" fill="#7a6244" text-anchor="middle">
+          <text x="75"   y="20">13</text><text x="165" y="20">14</text>
+          <text x="255"  y="20">15</text><text x="345" y="20">16</text>
+          <text x="435"  y="20">17</text><text x="525" y="20">18</text>
+          <text x="675"  y="20">19</text><text x="765" y="20">20</text>
+          <text x="855"  y="20">21</text><text x="945" y="20">22</text>
+          <text x="1035" y="20">23</text><text x="1125" y="20">24</text>
+
+          <text x="75"  y="708">12</text><text x="165" y="708">11</text>
+          <text x="255" y="708">10</text><text x="345" y="708">9</text>
+          <text x="435" y="708">8</text> <text x="525" y="708">7</text>
+          <text x="675" y="708">6</text> <text x="765" y="708">5</text>
+          <text x="855" y="708">4</text> <text x="945" y="708">3</text>
+          <text x="1035" y="708">2</text><text x="1125" y="708">1</text>
+        </g>
+
+        <!-- ─── CHECKERS ─── -->
+        <!--
+            Position: White (ivory) just played 6-1: 13/7  24/23  (a slot+split, the questionable play)
+            Best play would have been 13/7  8/7   (making the bar point).
+
+            White checkers (ivory, after the played move):
+              point  6: 5     point  7: 1   point  8: 3
+              point 13: 4     point 23: 1   point 24: 1
+              total = 5+1+3+4+1+1 = 15  ✓
+
+            Black checkers (ebony, untouched starting setup):
+              point 1: 2  point 12: 5  point 17: 3  point 19: 5
+              total = 15  ✓
+          -->
+        <g id="checkers" filter="url(#softShadow)">
+
+          <!-- Helpers: each circle uses r=32. Stack step on bottom row goes UP from y=658 by 50 each. On top row goes DOWN from y=62 by 50 each. -->
+
+          <!-- POINT 6 (bottom-right half, x-center 675) — 5 IVORY -->
+          <g transform="translate(675, 0)">
+            <circle cy="658" r="32" fill="url(#ivory)"/>
+            <circle cy="608" r="32" fill="url(#ivory)"/>
+            <circle cy="558" r="32" fill="url(#ivory)"/>
+            <circle cy="508" r="32" fill="url(#ivory)"/>
+            <circle cy="458" r="32" fill="url(#ivory)"/>
+          </g>
+          <!-- thin inner ring on each (tournament pip) -->
+          <g fill="none" stroke="#a48656" stroke-width="1" opacity=".55">
+            <circle cx="675" cy="658" r="22"/>
+            <circle cx="675" cy="608" r="22"/>
+            <circle cx="675" cy="558" r="22"/>
+            <circle cx="675" cy="508" r="22"/>
+            <circle cx="675" cy="458" r="22"/>
+          </g>
+
+          <!-- POINT 7 (bottom-left half, x-center 525) — 1 IVORY (just landed; will be highlighted) -->
+          <circle id="ck-7-1" cx="525" cy="658" r="32" fill="url(#ivory)"/>
+          <circle cx="525" cy="658" r="22" fill="none" stroke="#a48656" stroke-width="1" opacity=".55"/>
+
+          <!-- POINT 8 (bottom-left half, x-center 435) — 3 IVORY -->
+          <g>
+            <circle cx="435" cy="658" r="32" fill="url(#ivory)"/>
+            <circle cx="435" cy="608" r="32" fill="url(#ivory)"/>
+            <circle cx="435" cy="558" r="32" fill="url(#ivory)"/>
+            <circle cx="435" cy="658" r="22" fill="none" stroke="#a48656" stroke-width="1" opacity=".55"/>
+            <circle cx="435" cy="608" r="22" fill="none" stroke="#a48656" stroke-width="1" opacity=".55"/>
+            <circle cx="435" cy="558" r="22" fill="none" stroke="#a48656" stroke-width="1" opacity=".55"/>
+          </g>
+
+          <!-- POINT 13 (top-left half, x-center 75) — 4 IVORY -->
+          <g>
+            <circle cx="75" cy="62"  r="32" fill="url(#ivory)"/>
+            <circle cx="75" cy="112" r="32" fill="url(#ivory)"/>
+            <circle cx="75" cy="162" r="32" fill="url(#ivory)"/>
+            <circle cx="75" cy="212" r="32" fill="url(#ivory)"/>
+            <circle cx="75" cy="62"  r="22" fill="none" stroke="#a48656" stroke-width="1" opacity=".55"/>
+            <circle cx="75" cy="112" r="22" fill="none" stroke="#a48656" stroke-width="1" opacity=".55"/>
+            <circle cx="75" cy="162" r="22" fill="none" stroke="#a48656" stroke-width="1" opacity=".55"/>
+            <circle cx="75" cy="212" r="22" fill="none" stroke="#a48656" stroke-width="1" opacity=".55"/>
+          </g>
+
+          <!-- POINT 23 (top-right half, x-center 1035) — 1 IVORY (the split blot, the mistake) -->
+          <circle id="ck-23-1" cx="1035" cy="62" r="32" fill="url(#ivory)"/>
+          <circle cx="1035" cy="62" r="22" fill="none" stroke="#a48656" stroke-width="1" opacity=".55"/>
+
+          <!-- POINT 24 (top-right half, x-center 1125) — 1 IVORY -->
+          <circle cx="1125" cy="62" r="32" fill="url(#ivory)"/>
+          <circle cx="1125" cy="62" r="22" fill="none" stroke="#a48656" stroke-width="1" opacity=".55"/>
+
+          <!-- POINT 1 (bottom-right half, x-center 1125) — 2 EBONY -->
+          <g>
+            <circle cx="1125" cy="658" r="32" fill="url(#ebony)"/>
+            <circle cx="1125" cy="608" r="32" fill="url(#ebony)"/>
+            <circle cx="1125" cy="658" r="22" fill="none" stroke="#3a2a1f" stroke-width="1" opacity=".5"/>
+            <circle cx="1125" cy="608" r="22" fill="none" stroke="#3a2a1f" stroke-width="1" opacity=".5"/>
+          </g>
+
+          <!-- POINT 12 (bottom-left half, x-center 75) — 5 EBONY -->
+          <g>
+            <circle cx="75" cy="658" r="32" fill="url(#ebony)"/>
+            <circle cx="75" cy="608" r="32" fill="url(#ebony)"/>
+            <circle cx="75" cy="558" r="32" fill="url(#ebony)"/>
+            <circle cx="75" cy="508" r="32" fill="url(#ebony)"/>
+            <circle cx="75" cy="458" r="32" fill="url(#ebony)"/>
+          </g>
+          <g fill="none" stroke="#3a2a1f" stroke-width="1" opacity=".5">
+            <circle cx="75" cy="658" r="22"/>
+            <circle cx="75" cy="608" r="22"/>
+            <circle cx="75" cy="558" r="22"/>
+            <circle cx="75" cy="508" r="22"/>
+            <circle cx="75" cy="458" r="22"/>
+          </g>
+
+          <!-- POINT 17 (top-left half, x-center 435) — 3 EBONY -->
+          <g>
+            <circle cx="435" cy="62"  r="32" fill="url(#ebony)"/>
+            <circle cx="435" cy="112" r="32" fill="url(#ebony)"/>
+            <circle cx="435" cy="162" r="32" fill="url(#ebony)"/>
+            <circle cx="435" cy="62"  r="22" fill="none" stroke="#3a2a1f" stroke-width="1" opacity=".5"/>
+            <circle cx="435" cy="112" r="22" fill="none" stroke="#3a2a1f" stroke-width="1" opacity=".5"/>
+            <circle cx="435" cy="162" r="22" fill="none" stroke="#3a2a1f" stroke-width="1" opacity=".5"/>
+          </g>
+
+          <!-- POINT 19 (top-right half, x-center 675) — 5 EBONY -->
+          <g>
+            <circle cx="675" cy="62"  r="32" fill="url(#ebony)"/>
+            <circle cx="675" cy="112" r="32" fill="url(#ebony)"/>
+            <circle cx="675" cy="162" r="32" fill="url(#ebony)"/>
+            <circle cx="675" cy="212" r="32" fill="url(#ebony)"/>
+            <circle cx="675" cy="262" r="32" fill="url(#ebony)"/>
+          </g>
+          <g fill="none" stroke="#3a2a1f" stroke-width="1" opacity=".5">
+            <circle cx="675" cy="62" r="22"/>
+            <circle cx="675" cy="112" r="22"/>
+            <circle cx="675" cy="162" r="22"/>
+            <circle cx="675" cy="212" r="22"/>
+            <circle cx="675" cy="262" r="22"/>
+          </g>
+        </g>
+
+        <!-- ─── DICE (white rolled 6-1 — shown in the right half / White's home side) ─── -->
+        <g id="dice" filter="url(#softShadow)" transform="translate(0,0)">
+          <!-- die 1 (showing 6) -->
+          <g transform="translate(840,330) rotate(-6 24 24)">
+            <rect x="0" y="0" width="48" height="48" rx="8" fill="url(#dieGrad)" stroke="#a48656" stroke-width=".75"/>
+            <!-- six pips -->
+            <circle cx="13" cy="12" r="3.2" fill="#7a1a14"/>
+            <circle cx="35" cy="12" r="3.2" fill="#7a1a14"/>
+            <circle cx="13" cy="24" r="3.2" fill="#7a1a14"/>
+            <circle cx="35" cy="24" r="3.2" fill="#7a1a14"/>
+            <circle cx="13" cy="36" r="3.2" fill="#7a1a14"/>
+            <circle cx="35" cy="36" r="3.2" fill="#7a1a14"/>
+          </g>
+          <!-- die 2 (showing 1) -->
+          <g transform="translate(910,338) rotate(8 24 24)">
+            <rect x="0" y="0" width="48" height="48" rx="8" fill="url(#dieGrad)" stroke="#a48656" stroke-width=".75"/>
+            <circle cx="24" cy="24" r="4" fill="#7a1a14"/>
+          </g>
+        </g>
+
+        <!-- ─── DOUBLING CUBE (centered, on the bar) ─── -->
+        <g id="cube" filter="url(#softShadow)" transform="translate(584,346)">
+          <rect x="0" y="0" width="32" height="32" rx="5" fill="url(#dieGrad)" stroke="#a48656" stroke-width=".5"/>
+          <text x="16" y="22" text-anchor="middle" font-family="EB Garamond, serif" font-weight="700"
+                font-size="18" fill="#1a1410">2</text>
+        </g>
+
+        <!-- ─── BEST-MOVE ARROW OVERLAY ───────────────────────────────────────
+             Best play for White on 6-1 (per gnubg) was 13/7  8/7  (make the bar).
+             Show two glowing gold arrows that converge on point 7.
+             Arrows go from "checker top of source point" to "checker top of destination point".
+             ─── -->
+        <g id="best-overlay" opacity=".95">
+          <!-- 13 → 7  (top of point 13 stack at (75,62)  →  point 7 top of stack at (525, 658)) -->
+          <!-- We draw a curved arrow that arcs across the felt. -->
+          <path d="M 95,80 C 280,80 320,640 505,648"
+                stroke="#c79a4a" stroke-width="4.5" fill="none"
+                stroke-linecap="round"
+                marker-end="url(#arrowhead)"
+                stroke-dasharray="0"
+                opacity=".95"/>
+          <!-- 8 → 7  (point 8 top of stack at (435, 558) → point 7 top of stack at (525, 658)) -->
+          <path d="M 455,580 C 480,610 500,640 515,650"
+                stroke="#c79a4a" stroke-width="4.5" fill="none"
+                stroke-linecap="round"
+                marker-end="url(#arrowhead)"
+                opacity=".95"/>
+
+          <!-- target ring at point 7 showing "best lands here" -->
+          <circle cx="525" cy="658" r="38" fill="none" stroke="#c79a4a" stroke-width="2" opacity=".7" stroke-dasharray="3 3"/>
+        </g>
+
+        <!-- ─── BAD-MOVE INDICATOR (the played 24/23 split) ─── -->
+        <g id="bad-overlay" opacity=".85">
+          <path d="M 1107,80 C 1080,80 1060,80 1055,80"
+                stroke="#b21d1d" stroke-width="3.5" fill="none"
+                stroke-linecap="round"
+                marker-end="url(#arrowhead-bad)"
+                opacity=".85"/>
+          <!-- pulse ring around the blot -->
+          <circle cx="1035" cy="62" r="38" fill="none" stroke="#b21d1d" stroke-width="2" opacity=".55"/>
+        </g>
+
+      </svg>
+
+      <!-- ─── FLOATING MISTAKE CARD ─── -->
+      <div class="mistake-card tier-error" id="mistakeCard">
+        <div class="head">
+          <span class="badge"><span class="ico">⚠</span><span id="badgeLabel">Error</span></span>
+          <button class="close" id="cardClose" title="Dismiss (Esc)">×</button>
+        </div>
+        <div class="equity-loss"><span class="sign">−</span><span id="eqLoss">0.082</span></div>
+        <div class="equity-label">equity lost on this move</div>
+
+        <div class="moves">
+          <div class="move-line">
+            <div>
+              <div class="lbl">Your move</div>
+              <div class="play">13/7  24/23</div>
+            </div>
+            <div class="eq" id="yourEq">−0.310</div>
+          </div>
+          <div class="move-line best">
+            <div>
+              <div class="lbl">Best move</div>
+              <div class="play">13/7  8/7  <span style="font-size:11px;color:#7a6244;">(make the bar)</span></div>
+            </div>
+            <div class="eq" id="bestEq">−0.228</div>
+          </div>
+        </div>
+
+        <div class="actions">
+          <button class="btn" id="replayBtn">Replay best</button>
+          <button class="btn ghost" id="hideArrowsBtn">Hide on board</button>
+        </div>
+
+        <div class="footer">
+          <span class="tag">2-ply</span>
+          <span class="tag">rollout · 1296 trials</span>
+          <span class="tag">opening book ✓</span>
+        </div>
+      </div>
+
+      <div class="good-flash" id="goodFlash">✓ Best move</div>
+    </div>
+
+    <!-- RIGHT RAIL -->
+    <div class="rail">
+      <h3>Move log</h3>
+      <div class="move-row"><span class="n">14.</span><span>4-2: 24/22 13/9</span><span class="me">5-3: 8/3 6/3</span></div>
+      <div class="move-row"><span class="n">15.</span><span>3-1: 8/5 6/5</span><span class="me">6-2: 24/18</span></div>
+      <div class="move-row bad"><span class="n">16.</span><span>5-4: 13/8 13/9</span><span class="me">6-1: 13/7 24/23</span></div>
+
+      <h3 style="margin-top:18px;">Mistakes this game</h3>
+      <div class="mistake-history-item slight" data-tier="slight">
+        <span class="sev"></span>
+        <span class="label">Move 9 — 4-2: split too early</span>
+        <span class="eq">−0.034</span>
+      </div>
+      <div class="mistake-history-item" data-tier="error">
+        <span class="sev"></span>
+        <span class="label">Move 16 — 6-1: should make bar</span>
+        <span class="eq">−0.082</span>
+      </div>
+      <div class="mistake-history-item blunder" data-tier="blunder" style="opacity:.55;">
+        <span class="sev"></span>
+        <span class="label">(example) Move 22 — failed to hit</span>
+        <span class="eq">−0.214</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- DEMO CONTROLS -->
+  <div class="severity-toggles">
+    <span class="lab">Preview severity</span>
+    <button data-tier="good">Good move</button>
+    <button data-tier="slight">Slight slip</button>
+    <button data-tier="error" class="active">Error</button>
+    <button data-tier="blunder">Blunder</button>
+    <span style="flex:1"></span>
+    <button data-tier="hidden">Dismiss card</button>
+  </div>
+
+  <div class="legend">
+    <strong>Mockup notes.</strong> Click the buttons above to preview each card variant.
+    Best-move arrows on the board (gold) and the played-blot warning ring (red) are part of the inline overlay.
+    Severity tiers map to backend <code>classification</code>:
+    <span style="margin-left:6px;"><span class="sw" style="background:var(--good)"></span>GOOD ≤ 0.020</span> ·
+    <span><span class="sw" style="background:var(--slight)"></span>INACCURACY ≤ 0.050</span> ·
+    <span><span class="sw" style="background:var(--error)"></span>ERROR ≤ 0.100</span> ·
+    <span><span class="sw" style="background:var(--blunder)"></span>BLUNDER &gt; 0.100</span>.
+    Field names match the existing <code>PostMoveAnalysisResponse</code> payload.
+  </div>
+</div>
+
+<script>
+  const card = document.getElementById('mistakeCard');
+  const badge = document.getElementById('badgeLabel');
+  const eqLossEl = document.getElementById('eqLoss');
+  const yourEqEl = document.getElementById('yourEq');
+  const bestEqEl = document.getElementById('bestEq');
+  const goodFlash = document.getElementById('goodFlash');
+  const bestOverlay = document.getElementById('best-overlay');
+  const badOverlay  = document.getElementById('bad-overlay');
+  const hideBtn = document.getElementById('hideArrowsBtn');
+
+  const tiers = {
+    good:    { label: 'Best move',    loss: '0.000', yours: '−0.228', best: '−0.228', cls: 'tier-good' },
+    slight:  { label: 'Slight slip',  loss: '0.034', yours: '−0.262', best: '−0.228', cls: 'tier-slight' },
+    error:   { label: 'Error',        loss: '0.082', yours: '−0.310', best: '−0.228', cls: 'tier-error' },
+    blunder: { label: 'Blunder',      loss: '0.214', yours: '−0.442', best: '−0.228', cls: 'tier-blunder' },
+  };
+
+  function setTier(tier) {
+    if (tier === 'hidden') {
+      card.classList.add('hidden');
+      goodFlash.style.display = 'none';
+      return;
+    }
+    card.classList.remove('hidden');
+
+    if (tier === 'good') {
+      // Show subtle confirmation pill instead of full card
+      card.classList.add('hidden');
+      goodFlash.style.display = 'block';
+      // Hide overlays
+      bestOverlay.style.display = 'none';
+      badOverlay.style.display = 'none';
+      return;
+    }
+
+    goodFlash.style.display = 'none';
+    bestOverlay.style.display = '';
+    badOverlay.style.display = '';
+
+    card.classList.remove('tier-good','tier-slight','tier-error','tier-blunder');
+    const t = tiers[tier];
+    card.classList.add(t.cls);
+    badge.textContent = t.label;
+    eqLossEl.textContent = t.loss;
+    yourEqEl.textContent = t.yours;
+    bestEqEl.textContent = t.best;
+  }
+
+  document.querySelectorAll('.severity-toggles button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.severity-toggles button').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      setTier(btn.dataset.tier);
+    });
+  });
+
+  document.getElementById('cardClose').addEventListener('click', () => {
+    card.classList.add('hidden');
+  });
+
+  let arrowsVisible = true;
+  hideBtn.addEventListener('click', () => {
+    arrowsVisible = !arrowsVisible;
+    bestOverlay.style.display = arrowsVisible ? '' : 'none';
+    badOverlay.style.display  = arrowsVisible ? '' : 'none';
+    hideBtn.textContent = arrowsVisible ? 'Hide on board' : 'Show on board';
+  });
+
+  document.getElementById('replayBtn').addEventListener('click', () => {
+    // Demo: pulse the gold arrows
+    bestOverlay.animate(
+      [{ opacity: 0 }, { opacity: 1 }, { opacity: 0.4 }, { opacity: 1 }],
+      { duration: 900, easing: 'cubic-bezier(.2,.8,.2,1)' }
+    );
+  });
+
+  // Keyboard shortcuts
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') card.classList.add('hidden');
+    if (e.key.toLowerCase() === 'b') hideBtn.click();
+    if (e.key.toLowerCase() === 'r') document.getElementById('replayBtn').click();
+  });
+
+  document.querySelectorAll('.mistake-history-item').forEach(item => {
+    item.addEventListener('click', () => {
+      const t = item.dataset.tier;
+      const targetBtn = document.querySelector(`.severity-toggles button[data-tier="${t}"]`);
+      if (targetBtn) targetBtn.click();
+    });
+  });
+</script>
+</body>
+</html>
