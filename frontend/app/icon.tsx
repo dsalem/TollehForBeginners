@@ -1,8 +1,8 @@
 import { ImageResponse } from "next/og";
 
-// Browser-tab favicon. At 32×32 the cream-checker-with-T composition from
-// apple-icon collapses into mush, so we drop the wood frame and just render
-// the cream disc full-bleed with a darker italic T. Reads at one glance.
+// 32×32 browser-tab favicon. At this size a full checkers-and-die
+// composition collapses into mush, so we keep just the two overlapping
+// checkers — still reads as backgammon, still uses the brand palette.
 
 export const size = { width: 32, height: 32 };
 export const contentType = "image/png";
@@ -15,21 +15,37 @@ export default function Icon() {
           width: "100%",
           height: "100%",
           display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          borderRadius: 16,
-          background: "linear-gradient(180deg, #fffaeb 0%, #ead9ad 100%)",
-          border: "1px solid #a48656",
-          color: "#7a2e23",
-          fontFamily: "Georgia, serif",
-          fontSize: 24,
-          fontWeight: 700,
-          fontStyle: "italic",
-          lineHeight: 1,
-          paddingBottom: 2,
+          background: "linear-gradient(135deg, #6e4220 0%, #2e1a0c 100%)",
+          position: "relative",
+          borderRadius: 6,
         }}
       >
-        T
+        {/* Cream checker — back-left */}
+        <div
+          style={{
+            position: "absolute",
+            left: 2,
+            top: 8,
+            width: 18,
+            height: 18,
+            borderRadius: 9,
+            background: "linear-gradient(180deg, #fffaeb 0%, #ead9ad 100%)",
+            border: "1px solid #a48656",
+          }}
+        />
+        {/* Burgundy checker — front-right, overlapping */}
+        <div
+          style={{
+            position: "absolute",
+            left: 12,
+            top: 14,
+            width: 18,
+            height: 18,
+            borderRadius: 9,
+            background: "linear-gradient(180deg, #a8483a 0%, #461410 100%)",
+            border: "1px solid #2a0a06",
+          }}
+        />
       </div>
     ),
     { ...size },
