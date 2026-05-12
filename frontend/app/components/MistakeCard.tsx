@@ -148,26 +148,19 @@ export default function MistakeCard({
 
       {typeof feedback.best_win_probability === "number" &&
       typeof feedback.your_win_probability === "number" ? (
-        // The engine evaluates the POST-move position, where the player on
-        // roll is the OPPONENT — so its raw win-probabilities are from the
-        // opponent's POV. Invert to show this from the move-maker's POV
-        // (which is what the user expects when they read "your win %").
-        (() => {
-          const myYour = 1 - feedback.your_win_probability;
-          const myBest = 1 - feedback.best_win_probability;
-          const winLostPct = Math.abs(myYour - myBest) * 100;
-          return (
-            <div className="mistake-card-winloss">
-              <span className="mistake-card-winloss-lbl">Win % lost</span>
-              <span className="mistake-card-winloss-num">
-                −{winLostPct.toFixed(0)}%
-              </span>
-              <span className="mistake-card-winloss-detail">
-                {formatPct(myYour)} → {formatPct(myBest)}
-              </span>
-            </div>
-          );
-        })()
+        // Both win probabilities are already from the moving player's POV.
+        // The backend's engine.py _flip_post_move_eval (and gnubg's own
+        // best_move() return) ensure that — so display them raw and use
+        // best - your as the win-prob lost by the mistake.
+        <div className="mistake-card-winloss">
+          <span className="mistake-card-winloss-lbl">Win % lost</span>
+          <span className="mistake-card-winloss-num">
+            −{Math.max(0, (feedback.best_win_probability - feedback.your_win_probability) * 100).toFixed(0)}%
+          </span>
+          <span className="mistake-card-winloss-detail">
+            {formatPct(feedback.your_win_probability)} → {formatPct(feedback.best_win_probability)}
+          </span>
+        </div>
       ) : null}
 
       <div className="mistake-card-moves">
@@ -180,7 +173,7 @@ export default function MistakeCard({
             <div>{formatEquity(feedback.your_equity)}</div>
             {typeof feedback.your_win_probability === "number" ? (
               <div className="mistake-card-move-win">
-                {formatPct(1 - feedback.your_win_probability)} win
+                {formatPct(feedback.your_win_probability)} win
               </div>
             ) : null}
           </div>
@@ -194,7 +187,7 @@ export default function MistakeCard({
             <div>{formatEquity(feedback.best_equity)}</div>
             {typeof feedback.best_win_probability === "number" ? (
               <div className="mistake-card-move-win">
-                {formatPct(1 - feedback.best_win_probability)} win
+                {formatPct(feedback.best_win_probability)} win
               </div>
             ) : null}
           </div>
